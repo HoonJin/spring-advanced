@@ -2,11 +2,13 @@ package com.example.spring.proxy;
 
 import com.example.spring.proxy.config.AppV1Config;
 import com.example.spring.proxy.config.AppV2Config;
+import com.example.spring.proxy.config.v1.InterfaceProxyConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
-@Import({AppV1Config.class, AppV2Config.class})
+//@Import({AppV1Config.class, AppV2Config.class})
+@Import(InterfaceProxyConfig.class)
 @SpringBootApplication(scanBasePackages = "com.example.spring.proxy.app")
 public class SpringProxyApplication {
 
