@@ -2,6 +2,7 @@ package com.example.spring.test;
 
 import com.example.spring.test.domain.Study;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -15,11 +16,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(FIndSlowTestExtension.class)
 class SpringTestApplicationTest {
 
     @Test
     // @Disabled
-    void create() {
+    void create() throws InterruptedException {
+        Thread.sleep(1200L);
         SpringTestApplication app = new SpringTestApplication();
         assertNotNull(app);
     }
