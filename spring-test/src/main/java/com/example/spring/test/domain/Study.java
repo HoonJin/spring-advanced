@@ -13,6 +13,8 @@ public class Study {
 
     private int limit;
 
+    private Member owner;
+
     public Study() {}
 
     public Study(int limit) {
