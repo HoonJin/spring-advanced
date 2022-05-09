@@ -6,6 +6,8 @@ import com.example.spring.proxy.config.v1.ConcreteProxyConfig;
 import com.example.spring.proxy.config.v1.InterfaceProxyConfig;
 import com.example.spring.proxy.config.v2.dynamic.DynamicProxyBasicConfig;
 import com.example.spring.proxy.config.v2.dynamic.DynamicProxyFilterConfig;
+import com.example.spring.proxy.config.v3.ProxyFactoryConfigV1;
+import com.example.spring.proxy.config.v3.ProxyFactoryConfigV2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -14,7 +16,9 @@ import org.springframework.context.annotation.Import;
 //@Import(InterfaceProxyConfig.class)
 //@Import(ConcreteProxyConfig.class)
 //@Import(DynamicProxyBasicConfig.class)
-@Import(DynamicProxyFilterConfig.class)
+//@Import(DynamicProxyFilterConfig.class)
+//@Import(ProxyFactoryConfigV1.class)
+@Import(ProxyFactoryConfigV2.class)
 @SpringBootApplication(scanBasePackages = "com.example.spring.proxy.app")
 public class SpringProxyApplication {
 
