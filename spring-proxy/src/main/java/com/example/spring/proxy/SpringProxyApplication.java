@@ -10,6 +10,7 @@ import com.example.spring.proxy.config.v3.ProxyFactoryConfigV1;
 import com.example.spring.proxy.config.v3.ProxyFactoryConfigV2;
 import com.example.spring.proxy.config.v4.BeanPostProcessorConfig;
 import com.example.spring.proxy.config.v5.AutoProxyConfig;
+import com.example.spring.proxy.config.v6.AopConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -22,7 +23,8 @@ import org.springframework.context.annotation.Import;
 //@Import(ProxyFactoryConfigV1.class)
 //@Import(ProxyFactoryConfigV2.class)
 //@Import(BeanPostProcessorConfig.class)
-@Import(AutoProxyConfig.class)
+//@Import(AutoProxyConfig.class)
+@Import(AopConfig.class)
 @SpringBootApplication(scanBasePackages = "com.example.spring.proxy.app")
 public class SpringProxyApplication {
 

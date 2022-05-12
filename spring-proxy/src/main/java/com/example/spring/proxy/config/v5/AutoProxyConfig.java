@@ -6,6 +6,7 @@ import com.example.spring.proxy.config.v3.advice.LogTraceAdvice;
 import com.example.spring.proxy.trace.logtrace.LogTrace;
 import com.example.spring.proxy.trace.logtrace.ThreadLocalLogTrace;
 import org.springframework.aop.Advisor;
+import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.context.annotation.Bean;
@@ -16,11 +17,27 @@ import org.springframework.context.annotation.Import;
 @Import({AppV1Config.class, AppV2Config.class})
 public class AutoProxyConfig {
 
-    @Bean
+//    @Bean
     public Advisor logAdvisor(LogTrace trace) {
         // point cut
         NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
         pointcut.setMappedNames("request*", "order*", "save*");
+        LogTraceAdvice advice = new LogTraceAdvice(trace);
+        return new DefaultPointcutAdvisor(pointcut, advice);
+    }
+
+//    @Bean
+    public Advisor logAdvisor2(LogTrace trace) {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* com.example.spring.proxy.app..*(..))");
+        LogTraceAdvice advice = new LogTraceAdvice(trace);
+        return new DefaultPointcutAdvisor(pointcut, advice);
+    }
+
+    @Bean
+    public Advisor logAdvisor3(LogTrace trace) {
+        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+        pointcut.setExpression("execution(* com.example.spring.proxy.app..*(..)) && !execution(* com.example.spring.proxy.app..noLog(..))");
         LogTraceAdvice advice = new LogTraceAdvice(trace);
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
