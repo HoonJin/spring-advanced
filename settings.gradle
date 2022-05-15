@@ -3,4 +3,5 @@ rootProject.name = 'spring'
 include 'spring-log'
 include 'spring-proxy'
 include 'spring-test'
+include 'spring-aop'
 
