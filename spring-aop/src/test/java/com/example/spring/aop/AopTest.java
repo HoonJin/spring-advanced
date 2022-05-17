@@ -2,9 +2,7 @@ package com.example.spring.aop;
 
 import com.example.spring.aop.order.OrderRepository;
 import com.example.spring.aop.order.OrderService;
-import com.example.spring.aop.order.aop.AspectV1;
-import com.example.spring.aop.order.aop.AspectV2;
-import com.example.spring.aop.order.aop.AspectV3;
+import com.example.spring.aop.order.aop.*;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-@Import(AspectV3.class)
+//@Import({AspectV5Order.LogAspect.class, AspectV5Order.TxAspect.class})
+@Import(AspectV6Advice.class)
 class AopTest {
 
     @Autowired
