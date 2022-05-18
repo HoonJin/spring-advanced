@@ -3,12 +3,17 @@ package com.example.spring.test.service;
 import com.example.spring.test.StudyRepository;
 import com.example.spring.test.domain.Member;
 import com.example.spring.test.domain.Study;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -20,6 +25,7 @@ import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 @Testcontainers
+@Slf4j
 class StudyServiceTest {
 
     @Mock
@@ -29,9 +35,21 @@ class StudyServiceTest {
 //    @Autowired
     private StudyRepository studyRepository;
 
+    // https://www.testcontainers.org/test_framework_integration/junit_5/
+//    @Container
+//    PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres")
+//            .withDatabaseName("test");
+
     @Container
-    PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres")
-            .withDatabaseName("test");
+    static GenericContainer genericContainer = new GenericContainer("postgres")
+            .withExposedPorts(5432)
+            .withEnv("POSTGRES_DB", "test");
+
+    @BeforeAll
+    static void beforeAll() {
+        Slf4jLogConsumer slf4jLogConsumer = new Slf4jLogConsumer(log);
+        genericContainer.followOutput(slf4jLogConsumer);
+    }
 
     @Test
     void createStudyTest() {
