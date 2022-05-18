@@ -7,20 +7,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
+@Testcontainers
 class StudyServiceTest {
 
     @Mock
     private MemberService memberService;
 
     @Mock
+//    @Autowired
     private StudyRepository studyRepository;
+
+    @Container
+    PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres")
+            .withDatabaseName("test");
 
     @Test
     void createStudyTest() {
