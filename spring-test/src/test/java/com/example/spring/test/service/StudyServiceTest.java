@@ -11,6 +11,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.util.TestPropertyValues;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
@@ -26,6 +31,7 @@ import static org.mockito.Mockito.times;
 @ExtendWith(MockitoExtension.class)
 @Testcontainers
 @Slf4j
+@ContextConfiguration(initializers = StudyServiceTest.ContainerPropertyInitializer.class)
 class StudyServiceTest {
 
     @Mock
@@ -34,6 +40,9 @@ class StudyServiceTest {
     @Mock
 //    @Autowired
     private StudyRepository studyRepository;
+
+    @Autowired
+    Environment environment;
 
     // https://www.testcontainers.org/test_framework_integration/junit_5/
 //    @Container
@@ -49,6 +58,13 @@ class StudyServiceTest {
     static void beforeAll() {
         Slf4jLogConsumer slf4jLogConsumer = new Slf4jLogConsumer(log);
         genericContainer.followOutput(slf4jLogConsumer);
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        System.out.println("-----------");
+        System.out.println("environment.getProperty(\"container.port\") = " + environment.getProperty("container.port"));
+//        studyRepository.deleteAll();
     }
 
     @Test
@@ -79,5 +95,14 @@ class StudyServiceTest {
         then(studyRepository).shouldHaveNoMoreInteractions();
 
         assertEquals("a@a.com", study.getOwner().getEmail());
+    }
+
+    static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+        @Override
+        public void initialize(ConfigurableApplicationContext applicationContext) {
+            TestPropertyValues.of(
+                    "container.port=" + genericContainer.getMappedPort(5432)
+            ).applyTo(applicationContext);
+        }
     }
 }
