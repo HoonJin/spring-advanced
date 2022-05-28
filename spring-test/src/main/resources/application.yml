@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: chaos-monkey
+#  mvc:
+#    pathmatch:
+#      matching-strategy: ant_path_matcher
+
+management:
+  endpoint:
+    chaosmonkey:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,chaosmonkey
+
+chaos:
+  monkey:
+    watcher:
+      repository: true
