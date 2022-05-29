@@ -1,4 +1,4 @@
-package com.example.spring.test.service;
+package com.example.spring.test.member;
 
 import com.example.spring.test.domain.Member;
 

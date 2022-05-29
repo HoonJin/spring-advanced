@@ -3,6 +3,7 @@ dependencies {
     // https://www.testcontainers.org/quickstart/junit_5_quickstart/
     testImplementation 'org.testcontainers:junit-jupiter:1.17.1'
     testImplementation 'org.testcontainers:postgresql:1.17.1'
+    testImplementation 'com.tngtech.archunit:archunit-junit5-engine:0.23.1'
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'de.codecentric:chaos-monkey-spring-boot:2.6.1'

@@ -1,8 +1,8 @@
-package com.example.spring.test.service;
+package com.example.spring.test.study;
 
-import com.example.spring.test.StudyRepository;
 import com.example.spring.test.domain.Member;
 import com.example.spring.test.domain.Study;
+import com.example.spring.test.member.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;

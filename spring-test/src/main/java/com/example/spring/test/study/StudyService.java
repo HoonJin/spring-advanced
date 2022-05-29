@@ -1,8 +1,8 @@
-package com.example.spring.test.service;
+package com.example.spring.test.study;
 
-import com.example.spring.test.StudyRepository;
 import com.example.spring.test.domain.Member;
 import com.example.spring.test.domain.Study;
+import com.example.spring.test.member.MemberService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

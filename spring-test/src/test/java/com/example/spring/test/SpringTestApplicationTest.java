@@ -1,20 +1,13 @@
 package com.example.spring.test;
 
-import com.example.spring.test.domain.Study;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.aggregator.AggregateWith;
-import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
-import org.junit.jupiter.params.aggregator.ArgumentsAggregationException;
-import org.junit.jupiter.params.aggregator.ArgumentsAggregator;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(FIndSlowTestExtension.class)
 class SpringTestApplicationTest {
@@ -40,18 +33,7 @@ class SpringTestApplicationTest {
         System.out.println("message = " + message);
     }
 
-    @ParameterizedTest(name = "{index} {displayName} message={0}")
-    @CsvSource({"10, 'java'", "20, 'python'"})
-    void parameterizedTest1(@AggregateWith(StudyAggregator.class) Study study) {
-        System.out.println("study = " + study);
-    }
 
-    static class StudyAggregator implements ArgumentsAggregator {
-        @Override
-        public Object aggregateArguments(ArgumentsAccessor accessor, ParameterContext context) throws ArgumentsAggregationException {
-            return new Study(accessor.getInteger(0));
-        }
-    }
 
     @SlowTest
     void slowTest() {
