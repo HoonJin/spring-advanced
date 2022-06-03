@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("/basic")
@@ -83,6 +84,44 @@ public class BasicController {
     public String literal(Model model) {
         model.addAttribute("data", "Spring");
         return "/basic/literal";
+    }
+
+    @GetMapping("operation")
+    public String operation(Model model) {
+        model.addAttribute("nullData", null);
+        model.addAttribute("data", "Spring!");
+        return "basic/operation";
+    }
+
+    @GetMapping("attribute")
+    public String attribute() {
+        return "basic/attribute";
+    }
+
+    @GetMapping("each")
+    public String each(Model model) {
+        addUsers(model);
+        return "basic/each";
+    }
+
+    private void addUsers(Model model) {
+        List<User> list = new ArrayList<>();
+        list.add(new User("userA", 10L));
+        list.add(new User("userB", 20L));
+        list.add(new User("userC", 30L));
+        model.addAttribute("users", list);
+    }
+
+    @GetMapping("condition")
+    public String condition(Model model) {
+        addUsers(model);
+        return "basic/condition";
+    }
+
+    @GetMapping("block")
+    public String block(Model model) {
+        addUsers(model);
+        return "basic/block";
     }
 
 }
