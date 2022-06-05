@@ -39,6 +39,21 @@
     </div>
 
     <hr class="my-4">
+    <div>판매여부</div>
+    <div>
+        <div class="form-check">
+            <input type="checkbox" id="open" th:field="${item.open}" class="form-check-input" disabled />
+            <label for="open" class="form-check-label">판매오픈</label>
+        </div>
+    </div>
+
+    <div>등록 지역</div>
+    <div th:each="region : ${regions}" class="form-check form-check-inline">
+        <input type="checkbox" th:field="${item.regions}" th:value="${region.key}" class="form-check-input" disabled />
+        <label th:for="${#ids.prev('regions')}" th:text="${region.value}" class="form-check-label">?!</label>
+    </div>
+
+    <hr class="my-4">
 
     <div class="row">
         <div class="col">
