@@ -5,4 +5,5 @@ include 'spring-proxy'
 include 'spring-test'
 include 'spring-aop'
 include 'spring-thymeleaf'
+include 'spring-message'
 
