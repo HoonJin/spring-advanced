@@ -3,6 +3,7 @@ package com.example.spring.validation.web.validation;
 import com.example.spring.validation.domain.item.Item;
 import com.example.spring.validation.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Controller
 @RequestMapping("/validation/v1/items")
 @RequiredArgsConstructor
@@ -53,7 +55,7 @@ public class ValidationItemControllerV1 {
             errors.put("price", "가격은 1000 ~ 1,000,000 까지 허용합니다.");
         }
         if (item.getQuantity() == null || item.getQuantity() >= 9999){
-            errors.put("quantity", "수량은 최대 9999개까지 허용합니다.");
+            errors.put("quantity", "수량은 최대 9,999개까지 허용합니다.");
         }
 
         // 필드가 아닌 복합 룰 검증
@@ -64,12 +66,15 @@ public class ValidationItemControllerV1 {
             }
         }
 
-        if (!errors.isEmpty()) {
+        // 코드의 흐름을 끊는 에러처리 방식
+        // !errors.isEmpty() 부정의 부정을 어떻게 처리하면 좋을까? (kotlin, scala에서는 nonEmpty)
+        if (errors.size() > 0) {
+            log.error("errors = {}", errors);
             model.addAttribute("errors", errors);
             return "validation/v1/addForm";
         }
 
-        // 성공 로
+        // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
