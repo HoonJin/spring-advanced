@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.validation.DefaultMessageCodesResolver;
 import org.springframework.validation.MessageCodesResolver;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MessageCodeResolverTest {
@@ -13,21 +15,19 @@ public class MessageCodeResolverTest {
     @Test
     void messageCodesResolverObject() {
         String[] messageCodes = codesResolver.resolveMessageCodes("required", "item");
-        for (String messageCode : messageCodes) {
-            System.out.println("messageCode = " + messageCode);
-        }
-
-        assertThat(messageCodes).containsExactly("required.item", "required");
+        Arrays.stream(messageCodes).forEach(code -> System.out.println("messageCode = " + code));
+        assertThat(messageCodes).containsExactly(
+                "required.item",
+                "required"
+        );
     }
 
     @Test
     void messageCodesResolverField() {
         String[] messageCodes = codesResolver.resolveMessageCodes("required", "item", "itemName", String.class);
-        for (String messageCode : messageCodes) {
-            System.out.println("messageCode = " + messageCode);
-        }
+        Arrays.stream(messageCodes).forEach(code -> System.out.println("messageCode = " + code));
 
-        assertThat(messageCodes).containsExactly(
+        assertThat(messageCodes).containsExactly( // 우선순위는 자세한 것부터 덜 자세한 것으로 내려감
                 "required.item.itemName",
                 "required.itemName",
                 "required.java.lang.String",
