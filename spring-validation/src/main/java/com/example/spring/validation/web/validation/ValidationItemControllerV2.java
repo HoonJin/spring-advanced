@@ -79,6 +79,10 @@ public class ValidationItemControllerV2 {
     }
 
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        // custom 검증 전에 최초에 bindingResult 를 먼저 체크함.
+        if (bindingResult.hasErrors()) {
+            return "validation/v2/addForm";
+        }
         // 필드 검증
         ValidationUtils.rejectIfEmptyOrWhitespace(bindingResult, "itemName", "required");
 //        if (!StringUtils.hasText(item.getItemName())) {
