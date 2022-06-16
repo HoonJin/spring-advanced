@@ -14,6 +14,7 @@ public class ItemValidator implements Validator {
     }
 
     @Override
+    // errors = bindingResult's parent
     public void validate(Object target, Errors errors) {
         Item item = (Item) target;
 

@@ -29,6 +29,7 @@ public class ValidationItemControllerV2 {
 
     @InitBinder
     public void init(WebDataBinder webDataBinder) {
+        log.info("init Binder = {}", webDataBinder);
         webDataBinder.addValidators(itemValidator);
     }
 
@@ -53,12 +54,13 @@ public class ValidationItemControllerV2 {
     }
 
     @PostMapping("/add")
+    // init binder 에 등록한 validator 가 동작하도록 @Validated 어노테이션 추가
     public String addItemV6(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "validation/v2/addForm";
         }
 
-        // 성공 로
+        // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
@@ -71,7 +73,7 @@ public class ValidationItemControllerV2 {
             return "validation/v2/addForm";
         }
 
-        // 성공 로
+        // 성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
