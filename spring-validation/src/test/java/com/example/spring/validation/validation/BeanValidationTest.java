@@ -17,13 +17,13 @@ public class BeanValidationTest {
         Validator validator = validatorFactory.getValidator();
 
         Item item = new Item();
-        item.setItemName(" ");
-        item.setPrice(999);
-        item.setQuantity(10000);
+        item.setItemName(" "); // 공백일 수 없습니다
+        item.setPrice(999); // 1000에서 10000000 사이여야 합니다
+        item.setQuantity(10000); // 9999 이하여야 합니다
 
-        Set<ConstraintViolation<Item>> validate = validator.validate(item);
-        for (ConstraintViolation<Item> itemConstraintViolation : validate) {
+        validator.validate(item).forEach(itemConstraintViolation -> {
             System.out.println("itemConstraintViolation = " + itemConstraintViolation);
-        }
+            System.out.println("itemConstraintViolation.getMessage() = " + itemConstraintViolation.getMessage());
+        });
     }
 }
