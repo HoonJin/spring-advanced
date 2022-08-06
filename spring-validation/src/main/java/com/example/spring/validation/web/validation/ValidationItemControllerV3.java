@@ -42,27 +42,10 @@ public class ValidationItemControllerV3 {
     }
 
     @PostMapping("/add")
-    public String addItemV2(@Validated(SaveCheck.class) @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String addItem(@Validated(SaveCheck.class) @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+//    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         // 필드가 아닌 복합 룰 검증
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int result = item.getPrice() * item.getQuantity();
-            if (result < 10000) {
-                bindingResult.reject("totalPriceMin", new Object[]{10000, result}, null);
-            }
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "validation/v3/addForm";
-        }
-
-        Item savedItem = itemRepository.save(item);
-        redirectAttributes.addAttribute("itemId", savedItem.getId());
-        redirectAttributes.addAttribute("status", true);
-        return "redirect:/validation/v3/items/{itemId}";
-    }
-
-    public String addItem(@Validated @ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-        // 필드가 아닌 복합 룰 검증
+        // 비지니스에 관련된 로직은 어노테이션에 의존하기 보단 직접 구현하는 것이 더 나은 것 같다.
         if (item.getPrice() != null && item.getQuantity() != null) {
             int result = item.getPrice() * item.getQuantity();
             if (result < 10000) {
@@ -88,24 +71,8 @@ public class ValidationItemControllerV3 {
     }
 
     @PostMapping("/{itemId}/edit")
-    public String editV2(@PathVariable Long itemId, @ModelAttribute @Validated(UpdateCheck.class) Item item, BindingResult bindingResult) {
-        // 필드가 아닌 복합 룰 검증
-        if (item.getPrice() != null && item.getQuantity() != null) {
-            int result = item.getPrice() * item.getQuantity();
-            if (result < 10000) {
-                bindingResult.reject("totalPriceMin", new Object[]{10000, result}, null);
-            }
-        }
-
-        if (bindingResult.hasErrors()) {
-            return "validation/v3/editForm";
-        }
-
-        itemRepository.update(itemId, item);
-        return "redirect:/validation/v3/items/{itemId}";
-    }
-
-    public String edit(@PathVariable Long itemId, @ModelAttribute @Validated Item item, BindingResult bindingResult) {
+    public String edit(@PathVariable Long itemId, @ModelAttribute @Validated(UpdateCheck.class) Item item, BindingResult bindingResult) {
+//    public String edit(@PathVariable Long itemId, @ModelAttribute @Validated Item item, BindingResult bindingResult) {
         // 필드가 아닌 복합 룰 검증
         if (item.getPrice() != null && item.getQuantity() != null) {
             int result = item.getPrice() * item.getQuantity();
