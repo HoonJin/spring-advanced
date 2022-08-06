@@ -15,19 +15,19 @@ import javax.validation.constraints.NotNull;
 //) // 실무에서 사용하기엔 단순하고 제약 조건이 많다.
 public class Item {
 
-    @NotNull(groups = UpdateCheck.class)
+//    @NotNull(groups = UpdateCheck.class)
     // groups 를 구현하는 것보다 save dto, update dto를 별개로 구성하는 것이 훨씬 낫다.
     private Long id;
 
-    @NotBlank(groups = {SaveCheck.class, UpdateCheck.class}) // error.properties 에서 메시지를 읽어온다
+//    @NotBlank(groups = {SaveCheck.class, UpdateCheck.class}) // error.properties 에서 메시지를 읽어온다
     private String itemName;
 
-    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
-    @Range(min = 1000, max = 10000000)
+//    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
+//    @Range(min = 1000, max = 10000000)
     private Integer price;
 
-    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
-    @Max(value = 9999, groups = SaveCheck.class)
+//    @NotNull(groups = {SaveCheck.class, UpdateCheck.class})
+//    @Max(value = 9999, groups = SaveCheck.class)
     private Integer quantity;
 
     public Item() {

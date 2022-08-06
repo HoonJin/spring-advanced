@@ -9,6 +9,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ItemUpdateForm {
 
+    @NotNull
+    private Long id;
+
     @NotBlank
     private String itemName;
 
@@ -16,6 +19,7 @@ public class ItemUpdateForm {
     @Range(min = 1000, max = 10000000)
     private Integer price;
 
+    @NotNull
     @Range(max = 99999)
     private Integer quantity;
 }
