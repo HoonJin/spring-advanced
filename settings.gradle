@@ -8,3 +8,5 @@ include 'spring-thymeleaf'
 include 'spring-form'
 include 'spring-message'
 include 'spring-validation'
+include 'spring-db'
+
