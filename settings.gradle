@@ -9,4 +9,4 @@ include 'spring-form'
 include 'spring-message'
 include 'spring-validation'
 include 'spring-db'
-
+include 'spring-login'
