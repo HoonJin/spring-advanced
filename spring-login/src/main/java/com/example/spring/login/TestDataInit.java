@@ -2,6 +2,8 @@ package com.example.spring.login;
 
 import com.example.spring.login.domain.item.Item;
 import com.example.spring.login.domain.item.ItemRepository;
+import com.example.spring.login.domain.member.Member;
+import com.example.spring.login.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +14,7 @@ import javax.annotation.PostConstruct;
 public class TestDataInit {
 
     private final ItemRepository itemRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 테스트용 데이터 추가
@@ -20,6 +23,13 @@ public class TestDataInit {
     public void init() {
         itemRepository.save(new Item("itemA", 10000, 10));
         itemRepository.save(new Item("itemB", 20000, 20));
+
+        Member member = new Member();
+        member.setLoginId("test");
+        member.setPassword("test!");
+        member.setName("tester");
+
+        memberRepository.save(member);
     }
 
 }
