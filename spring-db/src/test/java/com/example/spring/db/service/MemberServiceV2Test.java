@@ -76,7 +76,6 @@ class MemberServiceV2Test {
         Member byIdA = memberRepository.findById(dataSource.getConnection(), memberA.getMemberId());
         Member byIdB = memberRepository.findById(dataSource.getConnection(), memberEX.getMemberId());
 
-        // 트랜잭션이 없어서 개망하는 케이스
         Assertions.assertThat(byIdA.getMoney()).isEqualTo(10000);
         Assertions.assertThat(byIdB.getMoney()).isEqualTo(10000);
     }
