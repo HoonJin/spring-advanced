@@ -2,6 +2,7 @@ package com.example.spring.login.web.login;
 
 import com.example.spring.login.domain.login.LoginService;
 import com.example.spring.login.domain.member.Member;
+import com.example.spring.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -20,14 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginController {
 
     private final LoginService loginService;
-
+    private final SessionManager sessionManager;
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute LoginForm loginForm) {
         return "login/loginForm";
     }
 
-    @PostMapping("/login")
+//    @PostMapping("/login")
     public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpServletResponse response) {
         if (bindingResult.hasErrors()) {
             return "login/loginForm";
@@ -48,12 +50,37 @@ public class LoginController {
         }
     }
 
-    @PostMapping("logout")
+    @PostMapping("/login")
+    public String loginV2(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpServletResponse response) {
+        if (bindingResult.hasErrors()) {
+            return "login/loginForm";
+        }
+
+        log.info("form = {}", loginForm);
+        Member member = loginService.login(loginForm.getLoginId(), loginForm.getPassword());
+        log.info("member {}", member);
+
+        if (member == null) {
+            bindingResult.reject("loginError", "틀렷어 너");
+            return "login/loginForm";
+        } else {
+            sessionManager.createSession(member, response);
+            return "redirect:/";
+        }
+    }
+
+//    @PostMapping("logout")
     public String logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("memberId", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
 
+        return "redirect:/";
+    }
+
+    @PostMapping("logout")
+    public String logoutV2(HttpServletRequest request) {
+        sessionManager.expireSession(request);
         return "redirect:/";
     }
 
