@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import java.util.NoSuchElementException;
 
 @Slf4j // transaction manager & DataSourceUtils
 @RequiredArgsConstructor
+@Repository
 public class MemberRepositoryV3 {
 
     private final DataSource dataSource;
