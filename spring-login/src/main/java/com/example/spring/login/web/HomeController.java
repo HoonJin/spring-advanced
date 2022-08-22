@@ -2,6 +2,7 @@ package com.example.spring.login.web;
 
 import com.example.spring.login.domain.member.Member;
 import com.example.spring.login.domain.member.MemberRepository;
+import com.example.spring.login.web.resolver.Login;
 import com.example.spring.login.web.session.SessionManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,8 +73,19 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/")
+//    @GetMapping("/")
     public String homeLoginV3Spring(@SessionAttribute(name = SessionConst.LOGIN_MEMBER, required = false) Member member, Model model) {
+        if (member == null) {
+            return "home";
+        } else {
+            log.info("login memberId {}", member.getId());
+            model.addAttribute("member", member);
+            return "login/loginHome";
+        }
+    }
+
+    @GetMapping("/")
+    public String homeLoginV3ArgumentResolver(@Login Member member, Model model) {
         if (member == null) {
             return "home";
         } else {
