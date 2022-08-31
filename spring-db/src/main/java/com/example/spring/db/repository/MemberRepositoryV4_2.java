@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -15,13 +17,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
-// 이미 해결되어있지만 throws SQLException 예외 누수 문제 해결 버전. 서비스 레이어에서 throws SQLException을 체크하지 않는다.
-@Slf4j // transaction manager & DataSourceUtils
-@RequiredArgsConstructor
+// 이미 해결되어있지만 throws SQLException 예외 누수 문제 해결 버전.
+// 리포지토리에서 SQLException을 spring 이 제공하는 에러로 변환해서 던진다.
+@Slf4j
 //@Repository
-public class MemberRepositoryV4_1 implements MemberRepository {
+public class MemberRepositoryV4_2 implements MemberRepository {
 
     private final DataSource dataSource;
+    private final SQLExceptionTranslator translator;
+
+    public MemberRepositoryV4_2(DataSource dataSource) {
+        this.dataSource = dataSource;
+        this.translator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+    }
 
     @Override
     public Member save(Member member) {
@@ -36,8 +44,7 @@ public class MemberRepositoryV4_1 implements MemberRepository {
             return member;
         } catch (SQLException e) {
             log.error("exception occur ", e);
-            // throw e;
-            throw new MyDbException(e);
+            throw translator.translate("save", sql, e);
         } finally {
             DataSourceUtils.releaseConnection(conn, dataSource);
         }
@@ -63,7 +70,7 @@ public class MemberRepositoryV4_1 implements MemberRepository {
         } catch (SQLException e) {
             log.error("exception occur ", e);
             // throw e;
-            throw new MyDbException(e);
+            throw translator.translate("findById", sql, e);
         } finally {
             DataSourceUtils.releaseConnection(conn, dataSource);
         }
@@ -80,7 +87,7 @@ public class MemberRepositoryV4_1 implements MemberRepository {
         } catch (SQLException e) {
             log.error("exception occur ", e);
             // throw e;
-            throw new MyDbException(e);
+            throw translator.translate("update", sql, e);
         } finally {
             DataSourceUtils.releaseConnection(conn, dataSource);
         }
@@ -96,7 +103,7 @@ public class MemberRepositoryV4_1 implements MemberRepository {
         } catch (SQLException e) {
             log.error("exception occur ", e);
             // throw e;
-            throw new MyDbException(e);
+            throw translator.translate("delete", sql, e);
         } finally {
             DataSourceUtils.releaseConnection(conn, dataSource);
         }
