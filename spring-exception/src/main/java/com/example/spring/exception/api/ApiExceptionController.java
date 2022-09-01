@@ -1,16 +1,20 @@
 package com.example.spring.exception.api;
 
+import com.example.spring.exception.exception.BadRequestException;
 import com.example.spring.exception.exception.UserException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
 public class ApiExceptionController {
 
-    record MemberDto(String memberId, String name) {};
+    record MemberDto(String memberId, String name) {}
 
     @GetMapping("/api/members/{id}")
     public MemberDto getMember(@PathVariable("id") String id) {
@@ -24,5 +28,20 @@ public class ApiExceptionController {
             throw new UserException("사용자 오류");
 
         return new MemberDto(id, "hello" + id);
+    }
+
+    @GetMapping("/api/response-status-ex1")
+    public String exception1() {
+        throw new BadRequestException();
+    }
+
+    @GetMapping("/api/response-status-ex2")
+    public String exception2() {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "error.bad", new IllegalArgumentException());
+    }
+
+    @GetMapping("/api/default-handler-ex")
+    public String defaultException(@RequestParam Integer data) {
+        return "ok";
     }
 }
