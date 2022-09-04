@@ -1,32 +1,12 @@
 package com.example.spring.exception.api;
 
 import com.example.spring.exception.exception.UserException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ApiExceptionV2Controller {
-
-    record ErrorResult(String code, String message) {}
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ErrorResult illegalExceptionHandler(IllegalArgumentException e) {
-        return new ErrorResult("BAD", e.getMessage());
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<ErrorResult> userExceptionHandler(UserException e) {
-        return ResponseEntity.badRequest()
-                .body(new ErrorResult("USER-EX", e.getMessage()));
-    }
-
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler
-    public ErrorResult exceptionHandler(Exception e) {
-        return new ErrorResult("EX", e.getMessage());
-    }
 
     record MemberDto(String memberId, String name) {};
 
@@ -43,4 +23,5 @@ public class ApiExceptionV2Controller {
 
         return new MemberDto(id, "hello" + id);
     }
+
 }
