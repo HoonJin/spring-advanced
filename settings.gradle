@@ -12,4 +12,5 @@ include 'spring-db'
 include 'spring-login'
 include 'spring-exception'
 include 'spring-db2'
+include 'spring-converter'
 
