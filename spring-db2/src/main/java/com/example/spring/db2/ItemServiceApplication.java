@@ -1,5 +1,6 @@
 package com.example.spring.db2;
 
+import com.example.spring.db2.config.JdbcTemplateV1Config;
 import com.example.spring.db2.config.MemoryConfig;
 import com.example.spring.db2.repository.ItemRepository;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +10,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 
 
-@Import(MemoryConfig.class)
+@Import({
+		JdbcTemplateV1Config.class,
+//		MemoryConfig.class
+})
 @SpringBootApplication(scanBasePackages = "com.example.spring.db2.web")
 public class ItemServiceApplication {
 
