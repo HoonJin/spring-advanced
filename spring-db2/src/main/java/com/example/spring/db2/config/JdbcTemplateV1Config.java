@@ -2,6 +2,7 @@ package com.example.spring.db2.config;
 
 import com.example.spring.db2.repository.ItemRepository;
 import com.example.spring.db2.repository.jdbctemplate.JdbcTemplateItemRepositoryV1;
+import com.example.spring.db2.repository.jdbctemplate.JdbcTemplateItemRepositoryV2;
 import com.example.spring.db2.repository.memory.MemoryItemRepository;
 import com.example.spring.db2.service.ItemService;
 import com.example.spring.db2.service.ItemServiceV1;
@@ -24,7 +25,7 @@ public class JdbcTemplateV1Config {
 
     @Bean
     public ItemRepository itemRepository() {
-        return new JdbcTemplateItemRepositoryV1(dataSource);
+        return new JdbcTemplateItemRepositoryV2(dataSource);
     }
 
 }
