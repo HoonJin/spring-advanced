@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.util.StringUtils;
 
 import javax.sql.DataSource;
@@ -21,21 +21,21 @@ import java.util.Optional;
 public class JdbcTemplateItemRepositoryV2 implements ItemRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     public JdbcTemplateItemRepositoryV2(DataSource dataSource) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("item")
+                .usingGeneratedKeyColumns("id");
     }
 
     @Override
     public Item save(Item item) {
-        String sql = "insert into item(item_name, price, quantity) values (:itemName, :price, :quantity)";
-        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-
         BeanPropertySqlParameterSource source = new BeanPropertySqlParameterSource(item);
-        jdbcTemplate.update(sql, source, keyHolder);
+        Number id = simpleJdbcInsert.executeAndReturnKey(source);
 
-        long id = keyHolder.getKey().longValue();
-        item.setId(id);
+        item.setId(id.longValue());
         return item;
     }
 
