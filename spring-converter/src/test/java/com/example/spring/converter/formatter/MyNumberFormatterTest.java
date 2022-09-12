@@ -1,13 +1,10 @@
 package com.example.spring.converter.formatter;
 
-import org.assertj.core.api.Assert;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.util.Locale;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MyNumberFormatterTest {
 

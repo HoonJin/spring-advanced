@@ -17,11 +17,11 @@ public class FormattingConversionServiceTest {
 
         conversionService.addFormatter(new MyNumberFormatter());
 
-        IpPort convert = conversionService.convert("127.0.0.1:8080", IpPort.class);
-        Assertions.assertThat(convert).isEqualTo(new IpPort("127.0.0.1", 8080));
+        Assertions.assertThat(conversionService.convert("127.0.0.1:8080", IpPort.class))
+                .isEqualTo(new IpPort("127.0.0.1", 8080));
 
-        String result = conversionService.convert(1000, String.class);
-        Assertions.assertThat(result).isEqualTo("1,000");
+        Assertions.assertThat(conversionService.convert(1000, String.class))
+                .isEqualTo("1,000");
 
         Assertions.assertThat(conversionService.convert("1,000", Long.class))
                 .isEqualTo(1000L);
