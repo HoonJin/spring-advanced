@@ -6,28 +6,47 @@ import com.example.spring.db2.repository.ItemUpdateDto;
 import com.example.spring.db2.repository.memory.MemoryItemRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional // transactionManager 를 사용하지 않고 깔끔하게 해결 (테스트에서 자동 롤백으로 동작)
 @SpringBootTest
 class ItemRepositoryTest {
 
     @Autowired
     ItemRepository itemRepository;
 
+//    @Autowired
+//    PlatformTransactionManager transactionManager;
+//
+//    TransactionStatus status;
+//
+//    @BeforeEach
+//    void beforeEach() {
+//        status = transactionManager.getTransaction(new DefaultTransactionDefinition());
+//    }
+//
     @AfterEach
     void afterEach() {
         //MemoryItemRepository 의 경우 제한적으로 사용
         if (itemRepository instanceof MemoryItemRepository) {
             ((MemoryItemRepository) itemRepository).clearStore();
         }
+//        transactionManager.rollback(status);
     }
 
+//    @Commit // 만약에 db 에 저장하고 봐야한다면 해당 어노테이션으로 커밋을 하도록 함
     @Test
     void save() {
         //given
