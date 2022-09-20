@@ -4,6 +4,7 @@ import com.example.spring.db2.repository.ItemRepository;
 import com.example.spring.db2.repository.ItemSearchCond;
 import com.example.spring.db2.repository.ItemUpdateDto;
 import com.example.spring.db2.repository.memory.MemoryItemRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @Transactional // transactionManager 를 사용하지 않고 깔끔하게 해결 (테스트에서 자동 롤백으로 동작)
 @SpringBootTest
 class ItemRepositoryTest {
@@ -80,6 +82,9 @@ class ItemRepositoryTest {
 
     @Test
     void findItems() {
+        // @Repository, @Transactional annotation 있다면 프록시 클래스 이름 출력
+        // 없다면 클래스 이름만 출력
+        log.info("repo = {}", itemRepository.getClass());
         //given
         Item item1 = new Item("itemA-1", 10000, 10);
         Item item2 = new Item("itemA-2", 20000, 20);

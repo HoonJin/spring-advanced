@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
+// @Repository, @Transactional annotation 으로 인하여 JPA 예외가 스프링 예외로 변환됨
+// 컴포넌트 스캔시 PersistenceExceptionTranslationPostProcessor 으로 예외 변환 등록
+// EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible
 public class JpaItemRepositoryV1 implements ItemRepository {
 
     private final EntityManager em;
