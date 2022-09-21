@@ -5,3 +5,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("com.h2database:h2")
 }
+
+// hibernate 버전이 5.6.7 일 경우 에러가 나기 때문에, 다운그레이드 하는 그레이들 스크립트 추가
+// ext["hibernate.version"] = "5.6.5.Final"
