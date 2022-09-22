@@ -37,3 +37,7 @@ out/
 .vscode/
 
 /file/
+
+# query dsl 로 자동 생성된 Q class 가 커밋되지 않도록 추가
+#**/src/main/generated/**
+spring-db2/src/main/generated/**
