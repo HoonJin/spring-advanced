@@ -1,0 +1,14 @@
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("com.h2database:h2")
+
+    implementation("com.querydsl:querydsl-jpa")
+}
+
+// hibernate 버전이 5.6.7 일 경우 에러가 나기 때문에, 다운그레이드 하는 그레이들 스크립트 추가
+// ext["hibernate.version"] = "5.6.5.Final"
+
+// querydsl 추가, 자동 생성된 Q class를 gradle clean 으로 제거
+clean {
+    delete file('src/main/generated')
+}
