@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Profile;
 
 
 @Import({
-		QueryDslConfig.class
+		V2Config.class
+//		QueryDslConfig.class
 //		SpringDataJpaConfig.class
 //		JpaConfig.class
 //		MyBatisConfig.class
