@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.sql.DataSource;
@@ -99,5 +100,38 @@ public class BasicTxTest {
 
         Assertions.assertThat(outer.isNewTransaction()).isTrue();
         Assertions.assertThat(inner.isNewTransaction()).isFalse();
+    }
+
+    @Test
+    void outerRollback() {
+        log.info("start external transaction");
+        TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+        log.info("start internal transaction");
+        TransactionStatus inner = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+        log.info("commit internal transaction");
+        transactionManager.commit(inner);
+
+        log.info("rollback external transaction");
+        transactionManager.rollback(outer);
+    }
+
+    @Test
+    void innerRollback() {
+        log.info("start external transaction");
+        TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+        log.info("start internal transaction");
+        TransactionStatus inner = transactionManager.getTransaction(new DefaultTransactionDefinition());
+
+        log.info("rollback internal transaction");
+        transactionManager.rollback(inner);
+        // o.s.j.d.DataSourceTransactionManager     : Participating transaction failed - marking existing transaction as rollback-only
+
+        log.info("commit external transaction");
+        Assertions.assertThatThrownBy(() -> transactionManager.commit(outer))
+                .isInstanceOf(UnexpectedRollbackException.class);
+        // o.s.j.d.DataSourceTransactionManager     : Global transaction is marked as rollback-only but transactional code requested commit
     }
 }
