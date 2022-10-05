@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
@@ -133,5 +134,31 @@ public class BasicTxTest {
         Assertions.assertThatThrownBy(() -> transactionManager.commit(outer))
                 .isInstanceOf(UnexpectedRollbackException.class);
         // o.s.j.d.DataSourceTransactionManager     : Global transaction is marked as rollback-only but transactional code requested commit
+    }
+
+    @Test
+    void innerRollbackRequiresNew() {
+        log.info("start external transaction");
+        TransactionStatus outer = transactionManager.getTransaction(new DefaultTransactionDefinition());
+        log.info("outer.isNewTransaction()={}", outer.isNewTransaction());
+
+        log.info("start internal transaction");
+        DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus inner = transactionManager.getTransaction(definition);
+        // 기존 외부 트랜잭션을 suspend 하고 새 트랜잭션을 만들어냄
+        // o.s.j.d.DataSourceTransactionManager     : Suspending current transaction, creating new transaction with name [null]
+        log.info("inner.isNewTransaction()={}", inner.isNewTransaction());
+
+        // 내부 트랜잭션에서 롤백이 일어나더라도 외부 트랜잭션에 영향을 주지 않음
+        log.info("rollback internal transaction");
+        transactionManager.rollback(inner);
+        // o.s.j.d.DataSourceTransactionManager     : Resuming suspended transaction after completion of inner transaction
+
+        log.info("commit external transaction");
+        transactionManager.commit(outer);
+
+        Assertions.assertThat(outer.isNewTransaction()).isTrue();
+        Assertions.assertThat(inner.isNewTransaction()).isTrue();
     }
 }
