@@ -3,10 +3,13 @@ package com.example.spring.dbtx.propagation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
+
+import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 @Repository
 @Slf4j
@@ -15,7 +18,7 @@ public class LogRepository {
 
     private final EntityManager em;
 
-    @Transactional
+    @Transactional(propagation = REQUIRES_NEW)
     public void save(Log logMessage) {
         log.info("save log {}", logMessage);
         em.persist(logMessage);
