@@ -16,4 +16,5 @@ include 'spring-converter'
 include 'spring-file'
 include 'spring-dbtx'
 include 'spring-oauth2'
+include 'spring-batch'
 
